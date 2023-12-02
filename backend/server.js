@@ -5,7 +5,6 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
-const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const authRoutes = require('./routes/auth');
@@ -21,16 +20,16 @@ const adminRoutes = require('./routes/admin');
 const paymentRoutes = require('./routes/payments');
 
 const errorHandler = require('./middleware/errorHandler');
+const logger = require('./middleware/logger');
+const { apiLimiter } = require('./middleware/rateLimiter');
 
 const app = express();
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: 'Too many requests from this IP, please try again later.'
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.use(logger);
+}
 
-app.use(limiter);
+app.use(apiLimiter);
 app.use(helmet());
 app.use(compression());
 app.use(morgan('combined'));
