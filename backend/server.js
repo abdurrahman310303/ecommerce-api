@@ -18,6 +18,7 @@ const wishlistRoutes = require('./routes/wishlist');
 const couponRoutes = require('./routes/coupons');
 const adminRoutes = require('./routes/admin');
 const paymentRoutes = require('./routes/payments');
+const reportRoutes = require('./routes/reports');
 
 const errorHandler = require('./middleware/errorHandler');
 const logger = require('./middleware/logger');
@@ -59,6 +60,7 @@ app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/reports', reportRoutes);
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({
