@@ -1,7 +1,6 @@
 const Product = require('../models/Product');
 const Category = require('../models/Category');
 const Review = require('../models/Review');
-const cloudinary = require('../utils/cloudinary');
 
 exports.getAllProducts = async (req, res) => {
   try {
@@ -381,15 +380,12 @@ exports.uploadProductImages = async (req, res) => {
 
     const images = [];
     
-    if (req.files && req.files.length > 0) {
-      for (const file of req.files) {
-        const result = await cloudinary.uploader.upload(file.path, {
-          folder: 'ecommerce/products'
-        });
-        
+    if (req.body.images && req.body.images.length > 0) {
+      for (const image of req.body.images) {
         images.push({
-          public_id: result.public_id,
-          url: result.secure_url
+          public_id: `product_${Date.now()}_${Math.random()}`,
+          url: image.url || image,
+          alt: image.alt || ''
         });
       }
     }

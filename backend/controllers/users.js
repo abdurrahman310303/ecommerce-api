@@ -1,5 +1,4 @@
 const User = require('../models/User');
-const cloudinary = require('../utils/cloudinary');
 
 exports.getProfile = async (req, res) => {
   try {
@@ -58,19 +57,9 @@ exports.updateAvatar = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
-    if (user.avatar && user.avatar.public_id) {
-      await cloudinary.uploader.destroy(user.avatar.public_id);
-    }
-
-    const result = await cloudinary.uploader.upload(req.body.avatar, {
-      folder: 'ecommerce/avatars',
-      width: 150,
-      crop: 'scale'
-    });
-
     user.avatar = {
-      public_id: result.public_id,
-      url: result.secure_url
+      public_id: `avatar_${Date.now()}_${req.user.id}`,
+      url: req.body.avatar
     };
 
     await user.save();
