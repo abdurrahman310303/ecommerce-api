@@ -20,6 +20,7 @@ const adminRoutes = require('./routes/admin');
 const paymentRoutes = require('./routes/payments');
 const reportRoutes = require('./routes/reports');
 const notificationRoutes = require('./routes/notifications');
+const searchRoutes = require('./routes/search');
 
 const errorHandler = require('./middleware/errorHandler');
 const logger = require('./middleware/logger');
@@ -63,6 +64,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/search', searchRoutes);
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({
